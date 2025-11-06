@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火灾灭火剂判断程序</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to right, #f0f4ff, #e0ecff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 320px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            width: 85%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>火灾灭火剂判断</h2>
+        <input type="text" id="polarity" placeholder="请输入极性值">
+        <input type="text" id="boilingPoint" placeholder="请输入沸点(℃)">
+        <button onclick="judge()">判断灭火剂类型</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function judge() {
+            const polarityStr = document.getElementById("polarity").value.trim();
+            const boilingStr = document.getElementById("boilingPoint").value.trim();
+            const resultDiv = document.getElementById("result");
+
+            // 输入校验
+            if (polarityStr === "" || boilingStr === "") {
+                resultDiv.innerHTML = "❗ 请填写完整的极性和沸点数值";
+                resultDiv.style.color = "red";
+                return;
+            }
+
+            const polarity = parseFloat(polarityStr);
+            const boiling = parseFloat(boilingStr);
+
+            if (isNaN(polarity) || isNaN(boiling)) {
+                resultDiv.innerHTML = "⚠️ 请输入有效的数字！";
+                resultDiv.style.color = "red";
+                return;
+            }
+
+            // 判断逻辑
+            let result = "";
+            if (polarity > 4 || boiling > 70) {
+                result = "推荐使用：AR泡沫 💧";
+            } else if (polarity <= 4 && boiling < 70) {
+                result = "推荐使用：AF泡沫 💦";
+            } else if (polarity <= 4 && boiling >= 70) {
+                result = "推荐使用：AF泡沫 或 AR泡沫 💧💦";
+            } else {
+                result = "无法判断，请检查输入值。";
+            }
+
+            resultDiv.style.color = "#1a73e8";
+            resultDiv.innerHTML = result;
+        }
+    </script>
+</body>
+</html>
